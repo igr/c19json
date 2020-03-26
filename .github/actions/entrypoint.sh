@@ -22,6 +22,7 @@ git config --global user.name "RepoUpdater"
 echo "## Ignore workflow files (we may not touch them)"
 git update-index --assume-unchanged .github/workflows/*
 
+npm install
 npm run start
 
 echo "## Deleting node_modules..."
