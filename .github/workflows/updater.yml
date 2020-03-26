@@ -9,6 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: RepoUpdate
-      uses: igr/c19json/.github/actions/action@master
+      uses: igr/c19json/.github/actions@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
