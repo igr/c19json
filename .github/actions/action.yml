@@ -2,7 +2,7 @@ name: "RepoUpdater"
 description: "Runs node and updates repo."
 author: "igr"
 branding:
-  icon: award
+  icon: box
   color: red
 runs:
   using: "docker"
