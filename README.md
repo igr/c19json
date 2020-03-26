@@ -2,7 +2,9 @@
 
 ![RepoUpdater](https://github.com/igr/c19json/workflows/RepoUpdater/badge.svg)
 
-Preformatirani **zvanični** otvoreni podaci u `JSON` formatu.
+Preformatirani **ZVANIČNI** otvoreni podaci u `JSON` formatu.
+
+PODACI SE AUTOMATSKI REDOVNO OSVEŽAVAJU. 
 
 ## Struktura
 
