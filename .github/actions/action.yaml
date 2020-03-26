@@ -1,0 +1,11 @@
+name: "RepoUpdater"
+description: "Runs node and updates repo."
+author: "igr"
+branding:
+  icon: award
+  color: red
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.myInput }}
