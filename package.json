@@ -1,0 +1,18 @@
+{
+  "name": "c19json",
+  "description": "covid19-rs.json",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "csvjson-csv2json": "^5.0.6",
+    "fs": "0.0.1-security"
+  },
+  "devDependencies": {
+    "prettier": "2.0.2"
+  }
+}
