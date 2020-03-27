@@ -4,9 +4,9 @@
 
 Preformatirani **ZVANIČNI** otvoreni podaci u `JSON` formatu.
 
-PODACI SE AUTOMATSKI REDOVNO OSVEŽAVAJU. 
+> PODACI SE AUTOMATSKI OSVEŽAVAJU SVAKI SAT.
 
-## Struktura
+## 🟢 Potvrđeni slučajevi po danima za regione i sumarno
 
 ```json
 {
@@ -32,6 +32,17 @@ PODACI SE AUTOMATSKI REDOVNO OSVEŽAVAJU.
 ```
 
 
-LINK:
+🔗 LINK:
 
-## https://raw.githubusercontent.com/igr/c19json/master/covid19-rs.json
+```
+https://raw.githubusercontent.com/igr/c19json/master/covid19-rs.json
+```
+
+### https://raw.githubusercontent.com/igr/c19json/master/covid19-rs.json
+
+
+## 🙏 Hvala
+
+Hajde da održavamo bazu otvorenih setova podataka u smislenoj strukturi i mašinski čitljivijem formatu.
+
+Licenca: BSD 2-Clause License
