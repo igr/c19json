@@ -9,6 +9,11 @@ Date.prototype.addDays = function (days) {
   return date;
 };
 
+String.prototype.replaceAll = function(search, replacement) {
+  const target = this;
+  return target.replace(new RegExp(search, 'g'), replacement);
+};
+
 // Resulting JSON
 const regions = {};
 const map = {
@@ -33,14 +38,16 @@ function makeMap(report) {
 /**
  * Collects day data and append to final result.
  */
-function collectData(date, confirmedJson, isolationJson) {
+function collectData(date, confirmedJson, isolationJson, dailyJson) {
   console.log(`${date}`);
 
   const confirmedMap = makeMap(confirmedJson);
   const isolationMap = makeMap(isolationJson);
+  const dailyMap     = makeMap(dailyJson);
 
   let totalConfirmed = 0;
   let totalIsolation = 0;
+  let totalDaily     = 0;
 
   for (const entry in confirmedJson) {
     if (!confirmedJson.hasOwnProperty(entry)) continue;
@@ -48,6 +55,7 @@ function collectData(date, confirmedJson, isolationJson) {
 
     const confirmedValue = confirmedMap[region] || -1;
     const isolationValue = isolationMap[region] || -1;
+    const dailyValue     = dailyMap[region]     || -1;
 
     if (!regions[region]) {
       regions[region] = [];
@@ -57,16 +65,19 @@ function collectData(date, confirmedJson, isolationJson) {
       date,
       confirmed: confirmedValue,
       isolation: isolationValue,
+      daily:     dailyValue,
     });
 
     totalConfirmed += confirmedValue !== -1 ? confirmedValue : 0;
     totalIsolation += isolationValue !== -1 ? isolationValue : 0;
+    totalDaily     += dailyValue     !== -1 ? dailyValue     : 0;
   }
 
   map.serbia.push({
     date,
     confirmed: totalConfirmed,
     isolation: totalIsolation,
+    daily:     totalDaily,
   })
 }
 
@@ -103,15 +114,25 @@ async function fetchAll() {
   for (let currentDate = firstDate; currentDate <= today; currentDate = currentDate.addDays(1)) {
     const date = currentDate.toISOString().slice(0, 10);
 
+    const dailyJson = await requestCovidInfoForDay(date, 1);
     const confirmedJson = await requestCovidInfoForDay(date, 2);
     const isolationJson = await requestCovidInfoForDay(date, 3);
 
-    collectData(date, confirmedJson, isolationJson);
+    collectData(date, confirmedJson, isolationJson, dailyJson);
   }
 }
 
 fetchAll().then(() => {
   console.log("Done");
-  fs.writeFileSync('covid19-rs.json', JSON.stringify(map));
+
+  let json = JSON.stringify(map);
+  fs.writeFileSync('covid19-rs.json', json);
+
+  // json = json.replaceAll('"date"', '"t"');
+  // json = json.replaceAll('"isolation"', '"i"')
+  // json = json.replaceAll('"confirmed"', '"c"')
+  // json = json.replaceAll('"daily"', '"d"');
+  //
+  // fs.writeFileSync('covid19-rs-slim.json', json);
 });
 

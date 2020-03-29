@@ -2,6 +2,7 @@ module.exports = (date, type) => {
 	let values = {};
 
 	switch (type) {
+    case 1: values = {id: 1, name: "Заражено у дану"}; break;
 		case 2: values = {id: 2, name: "Заражено укупно"}; break;
 		case 3: values = {id: 3, name: "Самоизоловано укупно"}; break;
 		default: throw Error("Invalid type");

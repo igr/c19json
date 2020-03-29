@@ -6,7 +6,7 @@ Preformatirani **ZVANIČNI** otvoreni podaci u `JSON` formatu.
 
 > PODACI SE AUTOMATSKI OSVEŽAVAJU SVAKI SAT.
 
-## 🟢 Potvrđeni slučajevi, samoizolacija: po danima, za regione i sumarno
+## 🟢 Potvrđeni slučajevi, dnevni trend, samoizolacija / po danima / regioni i sumarno
 
 ```json
 {
@@ -16,6 +16,7 @@ Preformatirani **ZVANIČNI** otvoreni podaci u `JSON` formatu.
           "date": "2020-03-06",
           "confirmed": 1,
           "isolation": 3,
+          "daily": 2,
         },
         ...
     ],
@@ -25,6 +26,7 @@ Preformatirani **ZVANIČNI** otvoreni podaci u `JSON` formatu.
           		"date": "2020-03-06",
           		"confirmed": 7,
                 "isolation": 5,
+                "daily": 2,
         	},
         	...
     	]
@@ -43,7 +45,6 @@ https://raw.githubusercontent.com/igr/c19json/master/covid19-rs.json
 ```
 
 ### https://raw.githubusercontent.com/igr/c19json/master/covid19-rs.json
-
 
 [Celokupna istorija izmena](https://github.com/igr/c19json/commits/master/covid19-rs.json).
 
