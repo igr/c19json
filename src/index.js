@@ -9,6 +9,7 @@ Date.prototype.addDays = function (days) {
   return date;
 };
 
+// Resulting JSON
 const regions = {};
 const map = {
   date: (new Date()).toISOString().slice(0, 10),
@@ -16,14 +17,37 @@ const map = {
   regions
 };
 
-function collectData(response, date) {
-  console.log(date);
+/**
+ * Converts array of records to a Map<Region,Value>.
+ */
+function makeMap(report) {
+  const map = {};
+  for (const entry in report) {
+    if (!report.hasOwnProperty(entry)) continue;
+    const region = report[entry]['Територија'];
+    map[region] = report[entry]['Вредност'];
+  }
+  return map;
+}
+
+/**
+ * Collects day data and append to final result.
+ */
+function collectData(date, confirmedJson, isolationJson) {
+  console.log(`${date}`);
+
+  const confirmedMap = makeMap(confirmedJson);
+  const isolationMap = makeMap(isolationJson);
 
   let totalConfirmed = 0;
-  for (const entry in response) {
-    if (!response.hasOwnProperty(entry)) continue;
-    const region = response[entry]['Територија'];
-    const value = response[entry]['Вредност'];
+  let totalIsolation = 0;
+
+  for (const entry in confirmedJson) {
+    if (!confirmedJson.hasOwnProperty(entry)) continue;
+    const region = confirmedJson[entry]['Територија'];
+
+    const confirmedValue = confirmedMap[region] || -1;
+    const isolationValue = isolationMap[region] || -1;
 
     if (!regions[region]) {
       regions[region] = [];
@@ -31,19 +55,25 @@ function collectData(response, date) {
 
     regions[region].push({
       date,
-      confirmed: value,
+      confirmed: confirmedValue,
+      isolation: isolationValue,
     });
 
-    totalConfirmed += value;
+    totalConfirmed += confirmedValue !== -1 ? confirmedValue : 0;
+    totalIsolation += isolationValue !== -1 ? isolationValue : 0;
   }
 
   map.serbia.push({
     date,
     confirmed: totalConfirmed,
+    isolation: totalIsolation,
   })
 }
 
-async function requestCovidInfoForDay(requestDate) {
+/**
+ * Fetch daily report.
+ */
+async function requestCovidInfoForDay(requestDate, reportType) {
   return axios({
     method: "POST",
     url: "https://covid19.data.gov.rs/api/datasets/statistic/download_CSV",
@@ -53,16 +83,16 @@ async function requestCovidInfoForDay(requestDate) {
       "X-Requested-With": "XMLHttpRequest",
       "Content-Type": "application/json;charset=UTF-8"
     },
-    data: requestBody(requestDate)
+    data: requestBody(requestDate, reportType)
   }).then(res => {
-    let data = res.data;
+    const data = res.data;
 
-    let csvResponse = data.slice(68);
-    let jsonResponse = csv2json(csvResponse, {parseNumbers: true});
-    collectData(jsonResponse, requestDate);
+    const offset = data.indexOf('\nРанк');
+    let csvResponse = data.slice(offset + 1);
+    return csv2json(csvResponse, {parseNumbers: true});
   })
   .catch(err => {
-    console.log(`Error for ${requestDate}: ${err}`);
+    console.log(`${requestDate}: ${err}, report #${reportType}`);
   });
 }
 
@@ -71,8 +101,12 @@ async function fetchAll() {
   let today = new Date();
 
   for (let currentDate = firstDate; currentDate <= today; currentDate = currentDate.addDays(1)) {
-    const currentDateString = currentDate.toISOString().slice(0, 10);
-    await requestCovidInfoForDay(currentDateString)
+    const date = currentDate.toISOString().slice(0, 10);
+
+    const confirmedJson = await requestCovidInfoForDay(date, 2);
+    const isolationJson = await requestCovidInfoForDay(date, 3);
+
+    collectData(date, confirmedJson, isolationJson);
   }
 }
 
