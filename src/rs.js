@@ -2,6 +2,10 @@ const axios = require('axios');
 const csv2json = require('csvjson-csv2json');
 const requestBody = require('./requestBody');
 
+function log(msg) {
+  console.log(`RS  ${msg}`);
+}
+
 Date.prototype.addDays = function (days) {
   const date = new Date(this.valueOf());
   date.setDate(date.getDate() + days);
@@ -38,7 +42,7 @@ function makeMap(report) {
  * Collects day data and append to final result.
  */
 function collectData(date, confirmedJson, isolationJson, dailyJson) {
-  console.log(`${date}`);
+  log(date);
 
   const confirmedMap = makeMap(confirmedJson);
   const isolationMap = makeMap(isolationJson);
@@ -102,11 +106,11 @@ async function requestCovidInfoForDay(requestDate, reportType) {
     return csv2json(csvResponse, {parseNumbers: true});
   })
   .catch(err => {
-    console.log(`${requestDate}: ${err}, report #${reportType}`);
+    log(`${requestDate}: ${err}, report #${reportType}`);
   });
 }
 
-async function fetchAll() {
+async function fetchAllRs() {
   const firstDate = new Date('2020-03-06');
   let today = new Date();
 
@@ -123,4 +127,4 @@ async function fetchAll() {
   return JSON.stringify(map);
 }
 
-module.exports = fetchAll;
+module.exports = fetchAllRs;
