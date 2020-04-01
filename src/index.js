@@ -6,7 +6,7 @@ const fetchAllJhc = require('./jhc');
 Promise.all([
     fetchAllRs().then((json) => {
       console.log("Done RS");
-      fs.writeFileSync('covid19-rs.json', json);
+      fs.writeFileSync('covid19-rs.json', JSON.stringify(json));
 
       // json = json.replaceAll('"date"', '"t"');
       // json = json.replaceAll('"isolation"', '"i"')
@@ -18,7 +18,7 @@ Promise.all([
   ,
   fetchAllJhc().then((json) => {
     console.log("Done JHC");
-    fs.writeFileSync('covid19-jhc.json', json);
+    fs.writeFileSync('covid19-jhc.json', JSON.stringify(json));
   })
 ]).then(() => {
   console.log('Done all.');

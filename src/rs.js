@@ -110,6 +110,17 @@ async function requestCovidInfoForDay(requestDate, reportType) {
   });
 }
 
+function regionsToArray(map) {
+  let regions = [];
+
+  Object.keys(map.regions).forEach(function(k){
+    regions.push({region: k, data: map.regions[k]})
+  });
+
+  map.regions = regions;
+  return map;
+}
+
 async function fetchAllRs() {
   const firstDate = new Date('2020-03-06');
   let today = new Date();
@@ -124,7 +135,7 @@ async function fetchAllRs() {
     collectData(date, confirmedJson, isolationJson, dailyJson);
   }
 
-  return JSON.stringify(map);
+  return regionsToArray(map);
 }
 
 module.exports = fetchAllRs;

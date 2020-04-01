@@ -22,22 +22,24 @@ Preformatirani **ZVANIČNI** otvoreni podaci u `JSON` formatu.
         },
         ...
     ],
-    "regions": {
-    	"<ime regiona>": [
-    		{
-          		"date": "2020-03-06",
-          		"confirmed": 7,
+    "regions": [
+    	{
+            region: "<ime regiona>",
+            data: [
+              {
+                "date": "2020-03-06",
+                "confirmed": 7,
                 "isolation": 5,
                 "daily": 2,
-        	},
+        	  },
         	...
-    	]
-	}
+    	},
+	]
 }
 
 ```
 
-Vrednosti koje _ne postoje_ su obeležene sa `-1`.
+Vrednosti koje _NE POSTOJE_ su obeležene sa `-1`!
 
 
 🔗 LINK:

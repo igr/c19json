@@ -75,7 +75,7 @@ async function fetchAllJhc() {
     collectDataFromJHC(dailyJhcJson, dateRs);
   }
 
-  return JSON.stringify(jhc);
+  return jhc;
 }
 
 module.exports = fetchAllJhc;
